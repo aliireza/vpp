@@ -1,0 +1,50 @@
+From 1c42eb68bb9f0941e99f9ff9dd660725d294283c Mon Sep 17 00:00:00 2001
+From: Alireza Farshin <farshin@kth.se>
+Date: Tue, 12 Jan 2021 11:26:09 +0100
+Subject: [PATCH] vectorized PMD disabled
+
+---
+ drivers/net/mlx5/mlx5.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/mlx5/mlx5.c b/drivers/net/mlx5/mlx5.c
+index 94aaa6057..54d1b2a2f 100644
+--- a/drivers/net/mlx5/mlx5.c
++++ b/drivers/net/mlx5/mlx5.c
+@@ -1505,13 +1505,13 @@ mlx5_args_check(const char *key, const char *val, void *opaque)
+ 		return -rte_errno;
+ 	}
+ 	if (strcmp(MLX5_RXQ_CQE_COMP_EN, key) == 0) {
+-		config->cqe_comp = !!tmp;
++		config->cqe_comp = 0;
+ 	} else if (strcmp(MLX5_RXQ_CQE_PAD_EN, key) == 0) {
+ 		config->cqe_pad = !!tmp;
+ 	} else if (strcmp(MLX5_RXQ_PKT_PAD_EN, key) == 0) {
+ 		config->hw_padding = !!tmp;
+ 	} else if (strcmp(MLX5_RX_MPRQ_EN, key) == 0) {
+-		config->mprq.enabled = !!tmp;
++		config->mprq.enabled = 0;
+ 	} else if (strcmp(MLX5_RX_MPRQ_LOG_STRIDE_NUM, key) == 0) {
+ 		config->mprq.stride_num_n = tmp;
+ 	} else if (strcmp(MLX5_RX_MPRQ_MAX_MEMCPY_LEN, key) == 0) {
+@@ -1553,7 +1553,7 @@ mlx5_args_check(const char *key, const char *val, void *opaque)
+ 	} else if (strcmp(MLX5_TX_VEC_EN, key) == 0) {
+ 		DRV_LOG(WARNING, "%s: deprecated parameter, ignored", key);
+ 	} else if (strcmp(MLX5_RX_VEC_EN, key) == 0) {
+-		config->rx_vec_en = !!tmp;
++		config->rx_vec_en = 0;
+ 	} else if (strcmp(MLX5_L3_VXLAN_EN, key) == 0) {
+ 		config->l3_vxlan_en = !!tmp;
+ 	} else if (strcmp(MLX5_VF_NL_EN, key) == 0) {
+@@ -3327,7 +3327,7 @@ mlx5_pci_probe(struct rte_pci_driver *pci_drv __rte_unused,
+ 		.hw_padding = 0,
+ 		.mps = MLX5_ARG_UNSET,
+ 		.dbnc = MLX5_ARG_UNSET,
+-		.rx_vec_en = 1,
++		.rx_vec_en = 0,
+ 		.txq_inline_max = MLX5_ARG_UNSET,
+ 		.txq_inline_min = MLX5_ARG_UNSET,
+ 		.txq_inline_mpw = MLX5_ARG_UNSET,
+-- 
+2.17.1
+
